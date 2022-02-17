@@ -16,7 +16,6 @@ export class SearchComponent implements OnInit {
   ngOnInit(): void {
     this.search.valueChanges.pipe(
       debounceTime(400), // wait 300ms after the last event before emitting last value
-      filter(v => v !== ''), // filter empty value
       distinctUntilChanged() // only emit if value is different from previous value
     ).subscribe(value => this.store.dispatch(new GetSynonyms(value)));
   }

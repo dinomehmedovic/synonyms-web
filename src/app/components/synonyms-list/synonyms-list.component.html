@@ -1,11 +1,47 @@
 <div class="synonyms-list-wrapper">
-    <div class="synonyms-list">
+    <div *ngIf="(synonymsCount$ | async) || !(searchWord$ | async); else noData" class="synonyms-list">
         <div class="list-item" *ngFor="let synonym of (synonyms$ | async)">
             <p>{{ synonym }}</p>
             <div class="icon-group">
                 <div class="edit-icon"></div>
-                <div class="delete-icon"></div>
+                <div class="delete-icon" (click)="onSynonymDelete(synonym)"></div>
             </div>
         </div>
+        <ng-container *ngTemplateOutlet="addNewSynonymTemplate"></ng-container>
     </div>
+    <ng-template #noData>
+        <div class="container-center ">
+            <p class="no-data-text">No synonyms found for "{{ searchWord$ | async }}"</p>
+        </div>
+        <ng-container *ngTemplateOutlet="addNewSynonymTemplate"></ng-container>
+    </ng-template>
 </div>
+
+<ng-template #addNewSynonymTemplate>
+    <div *ngIf="(searchWord$ | async)" class="container-center">
+        <div *ngIf="!synonymFormToggle; else addNew" class="container-center">
+            <p class="add-new-text">Add new synonym for word "{{ searchWord$ | async }}"</p>
+            <button class="btn" (click)="addNewSynonym()">ADD</button>
+        </div>
+        <ng-template #addNew>
+            <div class="input-wrapper">
+                <input class="input" placeholder="Ex. word" [formControl]="synonymFormControl" type="text"/>
+            </div>
+            <div *ngIf="synonymFormControl.invalid && (synonymFormControl.dirty || synonymFormControl.touched)" class="error-container">
+                <div *ngIf="synonymFormControl.errors?.['required']">
+                    Synonym is required.
+                </div>
+                <div *ngIf="synonymFormControl.errors?.['maxlength']">
+                    Synonym can't have more than 50 letters.
+                </div>
+                <div *ngIf="synonymFormControl.errors?.['pattern']">
+                    Synonym can't contain numbers or special characters.
+                </div>
+            </div>
+            <div class="buttons-container">
+                <button class="btn" (click)="onSynonymCancel()">CANCEL</button>
+                <button class="btn green" [disabled]="synonymFormControl.invalid" (click)="onSynonymSave()">SAVE</button>
+            </div>
+        </ng-template>
+    </div>
+</ng-template>

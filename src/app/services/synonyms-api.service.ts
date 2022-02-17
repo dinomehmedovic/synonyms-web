@@ -31,4 +31,16 @@ export class SynonymsApiService {
   getSynonyms(synonym: string): Observable<any> {
     return this.makeRequest("GET", `synonyms/${synonym}`, {});
   }
+
+  addSynonyms(synonym: string, synonyms: any): Observable<any> {
+    return this.makeRequest("POST", `synonyms/${synonym}`, synonyms);
+  }
+
+  updateSynonym(synonym: string, newSynonymValue: any): Observable<any> {
+    return this.makeRequest("PATCH", `synonyms/${synonym}`, newSynonymValue);
+  }
+
+  deleteSynonym(synonym: string): Observable<any> {
+    return this.makeRequest("DELETE", `synonyms/${synonym}`, {});
+  }
 }
