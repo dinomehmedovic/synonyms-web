@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Select, Store } from "@ngxs/store";
 import { Observable } from "rxjs";
-import { AddSynonyms, DeleteSynonym } from "src/app/store/synonyms.actions";
+import { AddSynonyms, DeleteSynonym, UpdateSynonym } from "src/app/store/synonyms.actions";
 import { SynonymsState } from "src/app/store/synonyms.state";
 
 @Component({
@@ -16,6 +16,8 @@ export class SynonymsListComponent implements OnInit {
   @Select(SynonymsState.synonymsCount) synonymsCount$!: Observable<number>;
   synonymFormToggle = false;
   synonymFormControl!: FormControl;
+  synonymForUpdate = '';
+  synonymUpdateFormControl!: FormControl;
   constructor(private store: Store) {}
 
   ngOnInit(): void {
@@ -36,8 +38,8 @@ export class SynonymsListComponent implements OnInit {
   }
 
   onSynonymCancel(): void {
-    this.synonymFormToggle = false;
     this.synonymFormControl?.reset();
+    this.synonymFormToggle = false;
   }
 
   onSynonymSave(): void {
@@ -47,5 +49,23 @@ export class SynonymsListComponent implements OnInit {
 
   onSynonymDelete(synonym: string): void {
     this.store.dispatch(new DeleteSynonym(synonym));
+  }
+
+  updateSynonym(synonym: string): void {
+    this.synonymForUpdate = synonym;
+    this.synonymUpdateFormControl = new FormControl(synonym, [
+      Validators.required,
+      Validators.maxLength(30),
+      Validators.pattern("^[A-Za-z ]+$"),
+    ]);
+  }
+
+  onCancelUpdate(): void {
+    this.synonymUpdateFormControl?.reset();
+    this.synonymForUpdate = '';
+  }
+  onSynonymUpdate(synonym: string): void {
+    this.store.dispatch(new UpdateSynonym(synonym, this.synonymUpdateFormControl.value));
+    this.synonymForUpdate = '';
   }
 }

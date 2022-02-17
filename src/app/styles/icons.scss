@@ -29,3 +29,9 @@
     @extend .standard-size;
     background: url('/assets/icons/delete-icon.svg') left bottom no-repeat;
 }
+
+.close-icon {
+    @extend .icon;
+    @extend .standard-size;
+    background: url('/assets/icons/close-icon.svg') left bottom no-repeat;
+}

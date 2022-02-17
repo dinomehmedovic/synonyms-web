@@ -1,11 +1,33 @@
 <div class="synonyms-list-wrapper">
     <div *ngIf="(synonymsCount$ | async) || !(searchWord$ | async); else noData" class="synonyms-list">
-        <div class="list-item" *ngFor="let synonym of (synonyms$ | async)">
-            <p>{{ synonym }}</p>
-            <div class="icon-group">
-                <div class="edit-icon"></div>
-                <div class="delete-icon" (click)="onSynonymDelete(synonym)"></div>
+        <div *ngFor="let synonym of (synonyms$ | async)">
+            <div *ngIf="synonym !== synonymForUpdate; else updateSyn" class="list-item">
+                <p>{{ synonym }}</p>
+                <div class="icon-group">
+                    <div class="edit-icon" (click)="updateSynonym(synonym)"></div>
+                    <div class="delete-icon" (click)="onSynonymDelete(synonym)"></div>
+                </div>
             </div>
+            <ng-template #updateSyn>
+                <div class="list-item">
+                    <input class="input" autofocus maxlength="30" [formControl]="synonymUpdateFormControl" type="text"/>
+                    <div class="icon-group">
+                        <div class="close-icon" (click)="onCancelUpdate()"></div>
+                        <button class="btn green" [disabled]="synonymUpdateFormControl.invalid" (click)="onSynonymUpdate(synonym)">SAVE</button>
+                    </div>
+                </div>
+                <div *ngIf="synonymUpdateFormControl.invalid && (synonymUpdateFormControl.dirty || synonymUpdateFormControl.touched)" class="error-container">
+                    <div *ngIf="synonymUpdateFormControl.errors?.['required']">
+                        Synonym is required.
+                    </div>
+                    <div *ngIf="synonymUpdateFormControl.errors?.['maxlength']">
+                        Synonym can't have more than 30 letters.
+                    </div>
+                    <div *ngIf="synonymUpdateFormControl.errors?.['pattern']">
+                        Synonym can't contain numbers or special characters.
+                    </div>
+                </div>
+            </ng-template>
         </div>
         <ng-container *ngTemplateOutlet="addNewSynonymTemplate"></ng-container>
     </div>

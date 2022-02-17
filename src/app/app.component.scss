@@ -18,7 +18,14 @@
     background-position: center;
     background-size: contain;
     .content {
-        width: 400px;
+        width: 100%;
+        max-width: 400px;
         margin-top: 50px;
+    }
+    @media only screen and (max-width: 600px) {
+        padding: 20px;
+        .content {
+            margin-top: 20px;
+        }
     }
 }

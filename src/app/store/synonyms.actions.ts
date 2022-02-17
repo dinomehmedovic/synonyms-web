@@ -13,3 +13,7 @@ export class DeleteSynonym {
   constructor(public synonym: string) {}
 }
 
+export class UpdateSynonym {
+  static readonly type = "[Synonyms] UpdateSynonym";
+  constructor(public synonym: string, public updatedSynonym: string) {}
+}
