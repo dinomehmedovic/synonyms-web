@@ -18,13 +18,15 @@ export class SynonymsListComponent implements OnInit {
   synonymFormControl!: FormControl;
   constructor(private store: Store) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.searchWord$.subscribe(() => this.onSynonymCancel()); // Reset input form on search change
+  }
 
   initSynonymFormControl(): void {
     this.synonymFormControl = new FormControl("", [
       Validators.required,
-      Validators.maxLength(50),
-      Validators.pattern('^[A-Za-z]+$')
+      Validators.maxLength(30),
+      Validators.pattern("^[A-Za-z ]+$"),
     ]);
   }
 
@@ -35,6 +37,7 @@ export class SynonymsListComponent implements OnInit {
 
   onSynonymCancel(): void {
     this.synonymFormToggle = false;
+    this.synonymFormControl?.reset();
   }
 
   onSynonymSave(): void {

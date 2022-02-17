@@ -48,3 +48,13 @@
         }
     }
 }
+
+.error-container {
+  width: 100%;
+  color: #F0706A;
+  font-family: 'Roboto';
+  font-size: 12px;
+  div {
+      padding: 10px;
+  }
+}
