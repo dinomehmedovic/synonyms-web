@@ -16,3 +16,15 @@
     @extend .standard-size;
     background: url('/assets/icons/search-icon.svg') left bottom no-repeat;
 }
+
+.edit-icon {
+    @extend .icon;
+    @extend .standard-size;
+    background: url('/assets/icons/edit-icon.svg') left bottom no-repeat;
+}
+
+.delete-icon {
+    @extend .icon;
+    @extend .standard-size;
+    background: url('/assets/icons/delete-icon.svg') left bottom no-repeat;
+}

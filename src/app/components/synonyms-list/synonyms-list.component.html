@@ -1,0 +1,11 @@
+<div class="synonyms-list-wrapper">
+    <div class="synonyms-list">
+        <div class="list-item" *ngFor="let synonym of (synonyms$ | async)">
+            <p>{{ synonym }}</p>
+            <div class="icon-group">
+                <div class="edit-icon"></div>
+                <div class="delete-icon"></div>
+            </div>
+        </div>
+    </div>
+</div>
