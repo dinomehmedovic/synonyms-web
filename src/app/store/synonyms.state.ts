@@ -2,7 +2,12 @@ import { Injectable } from "@angular/core";
 import { Action, Selector, State, StateContext } from "@ngxs/store";
 import { catchError, tap, throwError } from "rxjs";
 import { SynonymsApiService } from "../services/synonyms-api.service";
-import { AddSynonyms, DeleteSynonym, GetSynonyms, UpdateSynonym } from "./synonyms.actions";
+import {
+  AddSynonyms,
+  DeleteSynonym,
+  GetSynonyms,
+  UpdateSynonym,
+} from "./synonyms.actions";
 
 export interface SynonymsStateModel {
   searchWord: string;
@@ -52,7 +57,6 @@ export class SynonymsState {
         .getSynonyms(action.synonym)
         .pipe(
           tap((result) => {
-            console.log("Result: ", result);
             ctx.patchState({
               loading: false,
               searchWord: action.synonym,
@@ -77,7 +81,6 @@ export class SynonymsState {
       .addSynonyms(ctx.getState().searchWord, { synonyms: [action.newSynonym] })
       .pipe(
         tap((result) => {
-          console.log("Result: ", result);
           ctx.patchState({ loading: false, synonyms: result.synonyms });
         }),
         catchError((error) => this.handleError(ctx, error))
@@ -95,7 +98,6 @@ export class SynonymsState {
       .deleteSynonym(action.synonym)
       .pipe(
         tap((result) => {
-          console.log("Result: ", result);
           ctx.patchState({ loading: false });
           ctx.dispatch(new GetSynonyms(ctx.getState().searchWord));
         }),
@@ -114,7 +116,6 @@ export class SynonymsState {
       .updateSynonym(action.synonym, { synonym: action.updatedSynonym })
       .pipe(
         tap((result) => {
-          console.log("Result: ", result);
           ctx.patchState({ loading: false });
           ctx.dispatch(new GetSynonyms(ctx.getState().searchWord));
         }),
